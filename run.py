@@ -12,4 +12,4 @@ if __name__ == '__main__':
 
     # root_url = sys.argv[1]
     root_url = 'https://www.metpromstroi.ru'
-    crawler(root_url, out_file='sitemap.xml')
+    exclude_url = 'https://www.metpromstroi.ru/production/'

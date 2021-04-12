@@ -14,12 +14,14 @@ class Crawler:
         'txt': TextWriter
     }
 
-    def __init__(self, rooturl, out_file, out_format='xml', maxtasks=100,
+    def __init__(self, rooturl, exclude_url, out_file, out_format='xml', maxtasks=100,
                  todo_queue_backend=set, done_backend=dict):
         """
         Crawler constructor
         :param rooturl: root url of site
         :type rooturl: str
+        :param exclude_url: excluded urls
+        :type exclude_url: str
         :param out_file: file to save sitemap result
         :type out_file: str
         :param out_format: sitemap type [xml | txt]. Default xml
@@ -28,6 +30,7 @@ class Crawler:
         :type maxtasks: int
         """
         self.rooturl = rooturl
+        self.exclude_url = exclude_url
         self.todo_queue = todo_queue_backend()
         self.busy = set()
         self.done = done_backend()
@@ -62,6 +65,7 @@ class Crawler:
             url = urllib.parse.urljoin(parenturl, url)
             url, frag = urllib.parse.urldefrag(url)
             if (url.startswith(self.rooturl) and
+                    not url.startswith(self.exclude_url) and
                     url not in self.busy and
                     url not in self.done and
                     url not in self.todo_queue):
